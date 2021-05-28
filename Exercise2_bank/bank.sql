@@ -89,24 +89,18 @@ select * from bank_customer;
 select * from depositer;
 select * from loan;
 
-select customer_name
-from depositor d,bank_account a
-where d.accno=a.accno
-and a.branch_name='SBI_ParliamentRoad'
-group by d.customer_name
-having count(d.customer_name)>=2;
+select distinct c.customer_name from bank_customer c,bank_account b where exists(select d.customer_name,count(d.customer_name) from depositer d,bank_account ba where ba.accno = d.accno and 
+c.customer_name = d.customer_name and ba.branch_name = 'SBI_ResidencyRoad' group by d.customer_name having count(d.customer_name)>=2);
 
-
-select d.customer_name
-             from bank_account a,branch b,depositor d
-             where b.branch_name=a.branch_name and
-    a.accno=d.accno and
-             b.branch_city='Bangalore'
-	     group by d.customer_name
-             having count(distinct b.branch_name)=(
-         select count(branch_name)
+select d.customer_name from depositer d,branch b,bank_account a 
+where b.branch_name=a.branch_name
+AND a.accno=d.accno
+and branch_city='Delhi'
+group by d.customer_name 
+having count(distinct b.branch_name)=(
+                select count(branch_name)
                 from branch
-         where branch_city='Bangalore');
+                where branch_city='Delhi');
 
 
 delete from bank_account where branch_name in (select branch_name from branch where branch_city = 'Bombay');
