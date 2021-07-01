@@ -1,12 +1,21 @@
 create database book_dealerr;
 use book_dealerr;
-create table publisher (name varchar (20) primary key, phone long, address varchar (20)); 
-create table book (book_id int primary key, title varchar (20), pub_year varchar (20), publisher_name varchar(20) , foreign key(publisher_name) references publisher(name) on delete cascade);
-create table book_authors (author_name varchar (20), book_id int, foreign key(book_id) references book(book_id) on delete cascade, primary key (book_id, author_name)); 
+create table publisher (name varchar (20) 
+primary key, phone long, address varchar (20)); 
+create table book (book_id int primary key, title varchar (20), 
+pub_year varchar (20), publisher_name varchar(20) , foreign key(publisher_name) references publisher(name) on delete cascade);
+
+create table book_authors (author_name varchar (20), 
+book_id int, foreign key(book_id) references book(book_id) on delete cascade, primary key (book_id, author_name)); 
+
 create table library_branch (branch_id int primary key, branch_name varchar (50), address varchar (50)); 
-create table book_copies (no_of_copies integer, book_id int, branch_id int, primary key (book_id, branch_id), foreign key(book_id) references book(book_id) on delete cascade, 
+
+create table book_copies (no_of_copies integer, book_id int, branch_id int, primary key (book_id, branch_id), 
+foreign key(book_id) references book(book_id) on delete cascade, 
 foreign key(branch_id) references library_branch(branch_id) on delete cascade); 
+
 create table card(card_no int primary key); 
+
 create table book_lending (date_out date, due_date date, book_id int, branch_id int, card_no int, primary key (book_id, branch_id, card_no), foreign key(book_id) references book(book_id) on delete cascade, 
 foreign key(branch_id) references library_branch(branch_id) on delete cascade, foreign key(card_no) references card(card_no) on delete cascade );
 
